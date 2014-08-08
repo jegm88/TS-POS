@@ -1,38 +1,31 @@
 //articulos.js
 //TODO: AGREGAR LOS OBJETOS RELACIONADOS AL OBJETO
-
-module.exports = function(app) {
-var Articulo = require('../models/articulos.js');
+var mongoose = require('mongoose');
+var Articulo = mongoose.model('Articulos');
 
 //GET - Regresa todos los articulos en la BD
-listarArticulos = function(req, res) {
+exports.listarArticulos = function(req, res) {
 	Articulo.find(function(err, articulos) {
-		if(!err) {
-			console.log('GET /articulos')
-			res.send(articulos);
-		} else {
-			console.log('ERROR: ' + err);
-		}
+ 		if(err) return res.send(500, err.message);
+		console.log('GET /articulos')
+		res.status(200).jsonp(articulos);
 	});
 };
 
 //GET - Regresa un articulo de la BD (por codigo)
-consultarArticulo = function(req, res) {
+exports.consultarArticulo = function(req, res) {
 	Articulo.findById(req.params.codigo, function(err, articulo) {
-		if(!err) {
-			console.log('GET /articulo/' + req.params.codigo);
-			res.send(articulo);
-		} else {
-			console.log('ERROR: ' + err);
-		}
+		 if(err) return res.send(500, err.message);
+		console.log('GET /articulo/' + req.params.codigo);
+		res.status(200).jsonp(articulo);
 	});
 };
 
-//POST - Inserta un nuevo Articulo en la BD
-guardarArticulo = function(req, res) {
+//POST - Inserta un nuevo articulo en la BD
+exports.guardarArticulo = function(req, res) {
 	console.log('POST');
 	console.log(req.body);
-	var Articulo = new Articulo({
+	var articulo = new Articulo({
 		codigo : req.body.codigo,
 		nombre : req.body.nombre,
 		descripcion : req.body.descripcion,
@@ -45,58 +38,39 @@ guardarArticulo = function(req, res) {
 		estado : req.body.estado,
 		observaciones : req.body.observaciones
 	});
-	Articulo.save(function(err) {
-		if(!err) {
-			console.log('Guardado');
-		} else {
-			console.log('ERROR: ' + err);
-		}
+	articulo.save(function(err) {
+		if(err) return res.send(500, err.message);
+		res.status(200).jsonp(articulo);
 	});
-	res.send(Articulo);
 };
 
 //PUT - Actualiza un articulo previamente guardado en la BD
-actualizarArticulo = function(req, res) {
-	Articulo.findById(req.params.codigo, function(err, Articulo) {
-		Articulo.codigo = req.body.codigo;
-		Articulo.nombre = req.body.nombre;
-		Articulo.descripcion = req.body.descripcion;
-		Articulo.compuesto = req.body.compuesto;
-		Articulo.valor = req.body.valor;
-		Articulo.valor_min = req.body.valor_min;
-		Articulo.valor_max = req.body.valor_max;
-		Articulo.foto = req.body.foto;
-		Articulo.codigo_barra = req.body.codigo_barra;
-		Articulo.estado = req.body.estado;
-		Articulo.observaciones = req.body.observaciones;
-		Articulo.save(function(err) {
-			if(!err) {
-				console.log('Actualizado');
-			} else {
-				console.log('ERROR: ' + err);
-			}
-			res.send(Articulo);
+exports.actualizarArticulo = function(req, res) {
+	Articulo.findById(req.params.codigo, function(err, articulo) {
+		articulo.codigo = req.body.codigo;
+		articulo.nombre = req.body.nombre;
+		articulo.descripcion = req.body.descripcion;
+		articulo.compuesto = req.body.compuesto;
+		articulo.valor = req.body.valor;
+		articulo.valor_min = req.body.valor_min;
+		articulo.valor_max = req.body.valor_max;
+		articulo.foto = req.body.foto;
+		articulo.codigo_barra = req.body.codigo_barra;
+		articulo.estado = req.body.estado;
+		articulo.observaciones = req.body.observaciones;
+		articulo.save(function(err) {
+		if(err) return res.send(500, err.message);
+		res.status(200).jsonp(articulo);
 		});
 	});
-}
+};
 
 //DELETE - Elimina un articulo a partir del codigo
-eliminarArticulo = function(req, res) {
-	Articulo.findById(req.params.codigo, function(err, Articulo) {
+exports.eliminarArticulo = function(req, res) {
+	Articulo.findById(req.params.codigo, function(err, articulo) {
 		Articulo.remove(function(err) {
-			if(!err) {
-				console.log('Eliminado');
-			} else {
-				console.log('ERROR: ' + err);
-			}
+		if(err) return res.send(500, err.message);
+		res.status(200).jsonp(articulo);
 		})
 	});
-}
-
-//Enlace de rutas y funciones
-app.get('/Articulos', listarArticulos);
-app.get('/Articulo/:id', consultarArticulo);
-app.post('/Articulo', guardarArticulo);
-app.put('/Articulo/:id', actualizarArticulo);
-app.delete('/Articulo/:id', eliminarArticulo);
 }

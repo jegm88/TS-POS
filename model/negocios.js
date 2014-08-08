@@ -1,7 +1,6 @@
-var mongoose = require('mongoose'),
-    Schema   = mongoose.Schema;
+exports = module.exports = function(app, mongoose) {
 
-var negocioSchema = new Schema({
+var negocioSchema = new mongoose.Schema({
   codigo : {type: Number},
   nombre : {type: String },
   descripcion : {type: String },
@@ -16,4 +15,5 @@ var negocioSchema = new Schema({
   observaciones	: {type: String }
  });
 
-module.exports = mongoose.model('Negocio', negocioSchema);
+mongoose.model('Negocio', negocioSchema);
+};
