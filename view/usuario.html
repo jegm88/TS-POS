@@ -1,0 +1,78 @@
+<html>
+<head>
+	<title>Usuarios</title>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular.min.js"></script>
+	<script type="text/javascript" src="js/usuario_controller.js"></script>
+</head>
+<body ng-app >
+	<div class="container" ng-controller = "usuario_controller">
+		<form role="form" name="formulario" id="pForm">
+			<div>
+				<h2>
+					Usuario
+				</h2>
+			</div>
+			<div class="form-group">
+				<label ng-class="{
+					'text-danger':formulario.txtIdentificacion.$error.required,
+					'text-success':formulario.txtIdentificacion.$valid
+					}">
+					Identificaci&oacute;n:
+				</label>
+				<input type="text" name="txtIdentificacion" placeholder="Identificacion" ng-model="usuario.identificacion" class="form-control" autocomplete = "off" required>
+			</div>
+			<div class="form-group">
+				<label ng-class="{
+					'text-danger':formulario.txtNombres.$error.required,
+					'text-success':formulario.txtNombres.$valid
+					}">
+					Nombres:
+				</label>
+				<input type="text" name="txtNombres" placeholder="Nombres" ng-model="usuario.nombres" class="form-control" autocomplete = "off" required>
+			</div>
+			<div class="form-group">
+				<label ng-class="{
+					'text-danger':formulario.txtNick.$error.required,
+					'text-success':formulario.txtNick.$valid
+					}">
+					Nick:
+				</label>
+				<input type="text" name="txtNick" placeholder="Nick" ng-model="usuario.nick" class="form-control" autocomplete = "off" required>
+			</div>
+			<div class="form-group">
+				<label ng-class="{
+					'text-danger':formulario.txtPassword.$error.required,
+					'text-success':formulario.txtPassword.$valid
+					}">
+					Password:
+				</label>
+				<input type="password" name="txtPassword" placeholder="Password" ng-model="usuario.password" class="form-control" autocomplete = "off" required>
+			</div>
+			<div class="form-group">
+				<label ng-class="{
+					'text-danger':formulario.selPerfil.$error.required,
+					'text-success':formulario.selPerfil.$valid
+					}">
+					Perfil:
+				</label>
+				<select name="selPerfil" class="form-control" ng-model="usuario.perfil" ng-options="perf.value as perf.label for perf in perfiles" autocomplete = "off" required> 
+				     <pre>{{selectedItem | json}}</pre>
+				      <option value="">-- Seleccione un perfil --</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label class = 'text-success'>Estados: </label>
+				<select name="selEstados" class="form-control" ng-model="usuario.estado" ng-options="est.value as est.label for est in estados">
+					<pre>{{selectedItem | json}}</pre>
+				</select>
+			</div>
+			<input type = "submit" name="btnGuardar" class="btn btn-primary" ng-disabled="formulario.$invalid" ng-click="guardarUsuario();"  value = "guardar" />
+			<input type = "submit" name="btnActualizar" class="btn btn-primary" ng-disabled="formulario.$invalid" ng-click="actualizarUsuario();" value = "actualizar" />
+			<input type = "button" name="btnConsultar" class="btn btn-primary" ng-disabled="formulario.txtIdentificacion.$invalid" ng-click="consultarUsuario();" value = "Consultar" />
+			<input type = "button" name="btnEliminar" class="btn btn-primary" ng-disabled="formulario.txtIdentificacion.$invalid" ng-click="eliminarUsuario();" value = "Eliminar" />
+		</form>
+	</div>
+</body>
+</html>
+

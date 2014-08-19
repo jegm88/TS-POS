@@ -36,7 +36,10 @@ exports.guardarArticulo = function(req, res) {
 		foto : req.body.foto,
 		codigo_barra : req.body.codigo_barra,
 		estado : req.body.estado,
-		observaciones : req.body.observaciones
+		observaciones : req.body.observaciones,
+
+		composicion : req.body.composicion,
+		proveedores : req.body.proveedores
 	});
 	articulo.save(function(err) {
 		if(err) return res.send(500, err.message);
@@ -58,6 +61,9 @@ exports.actualizarArticulo = function(req, res) {
 		articulo.codigo_barra = req.body.codigo_barra;
 		articulo.estado = req.body.estado;
 		articulo.observaciones = req.body.observaciones;
+		
+		articulo.composicion = req.body.composicion;
+		articulo.proveedores = req.body.proveedores;
 		articulo.save(function(err) {
 		if(err) return res.send(500, err.message);
 		res.status(200).jsonp(articulo);
